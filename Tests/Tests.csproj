@@ -50,7 +50,8 @@
         <Compile Include="ChainsafeRPCTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="ProvidersSendTests.cs" />
-        <Compile Include="TestHelper.cs" />
+        <Compile Include="Helpers\TestHelper.cs" />
+        <Compile Include="TransactionTests.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\ChainSafe.GamingSDK.EVM\ChainSafe.GamingSDK.EVM.csproj">
@@ -60,6 +61,10 @@
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Helpers\" />
+    </ItemGroup>"packages.config" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
