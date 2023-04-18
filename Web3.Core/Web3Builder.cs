@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ChainSafe.GamingWeb3
 {
+  /// <summary>
+  /// Builder object for Web3. Used to configure set of services.
+  /// </summary>
   public class Web3Builder
   {
     public delegate void ConfigureServicesDelegate(IWeb3ServiceCollection services);

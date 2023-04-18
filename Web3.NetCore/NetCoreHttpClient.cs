@@ -3,6 +3,9 @@ using Newtonsoft.Json;
 
 namespace ChainSafe.GamingWeb3.NetCore;
 
+/// <summary>
+/// Adapter for .NET Core HTTP Client
+/// </summary>
 public class NetCoreHttpClient : IHttpClient, IDisposable
 {
   private readonly HttpClient _originalClient;
