@@ -8,6 +8,8 @@ namespace ChainSafe.GamingWeb3.EVM.JsonRPC
     {
       serviceCollection.AddSingleton(settings);
       serviceCollection.AddSingleton<IEvmClient, JsonRpcEvmClient>();
+      serviceCollection.AddSingleton<JsonRpcProvider>();
+      serviceCollection.AddSingleton<JsonRpcSigner>();
     }
   }
 }

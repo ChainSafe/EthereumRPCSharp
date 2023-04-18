@@ -5,10 +5,10 @@
     public IEvmProvider Provider { get; }
     public IEvmSigner Signer { get; }
 
-    public JsonRpcEvmClient()
+    public JsonRpcEvmClient(JsonRpcProvider provider, JsonRpcSigner signer)
     {
-      Provider = new JsonRpcProvider();
-      Signer = new JsonRpcSigner();
+      Provider = provider;
+      Signer = signer;
     }
   }
 }
