@@ -5,6 +5,13 @@
   /// </summary>
   public class JsonRpcProvider : IEvmProvider
   {
+    private JsonRpcClientSettings _settings;
+
+    public JsonRpcProvider(JsonRpcClientSettings settings)
+    {
+      _settings = settings;
+    }
+    
     // todo
   }
 }
