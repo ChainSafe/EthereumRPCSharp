@@ -3,11 +3,11 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <Nullable>enable</Nullable>
-        <RootNamespace>ChainSafe.GamingWeb3.EVM</RootNamespace>
+        <RootNamespace>ChainSafe.GamingWeb3.Evm.JsonRpc</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Web3.Core\Web3.Core.csproj" />
+      <ProjectReference Include="..\Web3.Core\Web3.Core.csproj" />
     </ItemGroup>
 
 </Project>

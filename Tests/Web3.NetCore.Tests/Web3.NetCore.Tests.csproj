@@ -21,7 +21,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Web3.Core\Web3.Core.csproj" />
       <ProjectReference Include="..\..\Web3.NetCore\Web3.NetCore.csproj" />
-      <ProjectReference Include="..\Web3.EVM\Web3.EVM.csproj" />
+      <ProjectReference Include="..\..\Web3.Evm.JsonRpc\Web3.Evm.JsonRpc.csproj" />
     </ItemGroup>
 
 </Project>

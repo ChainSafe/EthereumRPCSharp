@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web3.NetCore.Tests", "Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web3.NetCore", "Web3.NetCore\Web3.NetCore.csproj", "{EE6C2F37-0E10-4DB6-8F5D-B661522F66B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web3.EVM", "Tests\Web3.EVM\Web3.EVM.csproj", "{10E3716C-943B-41F2-BB9A-C6E682AC5932}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web3.Evm.JsonRpc", "Web3.Evm.JsonRpc\Web3.Evm.JsonRpc.csproj", "{10E3716C-943B-41F2-BB9A-C6E682AC5932}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
