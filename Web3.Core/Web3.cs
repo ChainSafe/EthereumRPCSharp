@@ -19,10 +19,11 @@ namespace ChainSafe.GamingWeb3
 
     public async ValueTask Initialize()
     {
-      // todo
+      if (EvmClient != null) await EvmClient.Provider.Connect();
+      
+      // todo initialize other components
       
       _initialized = true;
-      return;
     }
 
     public void Terminate()

@@ -18,6 +18,8 @@ public class NetCoreHttpClient : IHttpClient, IDisposable
   
   public async ValueTask<TResponse> Post<TRequest, TResponse>(string url, TRequest data)
   {
+    // todo add retry logic
+    
     var requestJson = JsonConvert.SerializeObject(data);
     var requestContent = new StringContent(requestJson, Encoding.UTF8, "application/json");
     var responseMessage = await _originalClient.PostAsync(url, requestContent);

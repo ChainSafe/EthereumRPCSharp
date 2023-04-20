@@ -7,7 +7,7 @@ public class Web3EnvironmentTests
   private Web3 _web3;
 
   [SetUp]
-  public void Setup()
+  public async void Setup()
   {
     _web3 = new Web3Builder()
       .Configure(services =>
@@ -16,6 +16,8 @@ public class Web3EnvironmentTests
         services.UseJsonRpcEvmClient(new JsonRpcClientSettings());
       })
       .Build();
+
+    await _web3.Initialize();
   }
 
   [Test]
