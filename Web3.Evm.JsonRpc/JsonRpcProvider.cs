@@ -30,15 +30,7 @@ namespace ChainSafe.GamingWeb3.EVM.JsonRpc
     
     public async ValueTask Initialize()
     {
-      var chainIdHexString = await ExecuteRpc<string>("eth_chainId");
-      var chainId = new HexBigInteger(chainIdHexString).ToUlong();
-
-      if (chainId == 0)
-      {
-        throw new Web3Exception("Couldn't detect network");
-      }
-
-      throw new NotImplementedException();
+      // _network = await RequestNetwork();
     }
 
     public ValueTask<HexBigInteger> GetBalance(BlockParameter? blockTag = null)
@@ -107,6 +99,19 @@ namespace ChainSafe.GamingWeb3.EVM.JsonRpc
 
       var serializer = JsonSerializer.Create();
       return serializer.Deserialize<TResponse>(new JTokenReader(response.Result))!;
+    }
+
+    private async ValueTask<Network> RequestNetwork()
+    {
+      var chainIdHexString = await ExecuteRpc<string>("eth_chainId");
+      var chainId = new HexBigInteger(chainIdHexString).ToUlong();
+
+      if (chainId == 0)
+      {
+        throw new Web3Exception("Couldn't detect network");
+      }
+
+      throw new NotImplementedException();
     }
   }
 }
