@@ -1,7 +1,6 @@
-﻿using ChainSafe.GamingWeb3.EVM.Transactions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace ChainSafe.GamingWeb3.EVM.Blocks
+namespace ChainSafe.GamingWeb3.Evm
 {
     /// <summary>
     /// Block including transaction objects

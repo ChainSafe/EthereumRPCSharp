@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using ChainSafe.GamingWeb3.Environment;
 using ChainSafe.GamingWeb3.EVM;
 
 namespace ChainSafe.GamingWeb3
@@ -10,7 +11,8 @@ namespace ChainSafe.GamingWeb3
   public class Web3 : IDisposable
   {
     public IWeb3Environment Environment { get; internal set; }
-    public IEvmClient? EvmClient { get; internal set; }
+    public IEvmProvider? EvmProvider { get; internal set; }
+    public IEvmWallet? EvmWallet { get; internal set; }
 
     private bool _initialized;
     
@@ -19,7 +21,7 @@ namespace ChainSafe.GamingWeb3
 
     public async ValueTask Initialize()
     {
-      if (EvmClient != null) await EvmClient.Provider.Connect();
+      if (EvmProvider != null) await EvmProvider.Initialize();
       
       // todo initialize other components
       

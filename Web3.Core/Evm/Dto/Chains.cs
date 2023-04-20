@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace ChainSafe.GamingWeb3.EVM
+namespace ChainSafe.GamingWeb3.Evm
 {
   public class Chains
   {

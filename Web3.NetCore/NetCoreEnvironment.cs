@@ -1,4 +1,6 @@
-﻿namespace ChainSafe.GamingWeb3.NetCore;
+﻿using ChainSafe.GamingWeb3.Environment;
+
+namespace ChainSafe.GamingWeb3.NetCore;
 
 /// <summary>
 /// .NET Core version of Web3 Environment

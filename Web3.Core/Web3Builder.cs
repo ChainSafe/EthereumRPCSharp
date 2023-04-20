@@ -1,4 +1,5 @@
 ﻿using System;
+using ChainSafe.GamingWeb3.Environment;
 using ChainSafe.GamingWeb3.EVM;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -32,7 +33,8 @@ namespace ChainSafe.GamingWeb3
       var web3 = new Web3
       {
         Environment = environment,
-        EvmClient = serviceProvider.GetService<IEvmClient>()
+        EvmProvider = serviceProvider.GetService<IEvmProvider>(),
+        EvmWallet = serviceProvider.GetService<IEvmWallet>(),
       };
 
       return web3;

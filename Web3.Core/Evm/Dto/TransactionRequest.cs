@@ -4,7 +4,7 @@ using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json;
 
-namespace ChainSafe.GamingWeb3.EVM.Transactions
+namespace ChainSafe.GamingWeb3.Evm
 {
     public class TransactionRequest : ICloneable
     {

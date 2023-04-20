@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace ChainSafe.GamingWeb3.EVM.JsonRPC
+namespace ChainSafe.GamingWeb3.EVM.JsonRpc
 {
   [Serializable]
-  public class JsonRpcClientSettings
+  public class JsonRpcProviderSettings
   {
     public string RpcNodeUrl;
     

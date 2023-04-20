@@ -1,33 +1,34 @@
 ﻿using System;
 using System.Threading.Tasks;
-using ChainSafe.GamingWeb3.EVM.Transactions;
+using ChainSafe.GamingWeb3.Environment;
+using ChainSafe.GamingWeb3.Evm;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client.RpcMessages;
 using Nethereum.RPC.Eth.DTOs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Block = ChainSafe.GamingWeb3.EVM.Blocks.Block;
-using TransactionReceipt = ChainSafe.GamingWeb3.EVM.Transactions.TransactionReceipt;
+using Block = ChainSafe.GamingWeb3.Evm.Block;
+using TransactionReceipt = ChainSafe.GamingWeb3.Evm.TransactionReceipt;
 
-namespace ChainSafe.GamingWeb3.EVM.JsonRPC
+namespace ChainSafe.GamingWeb3.EVM.JsonRpc
 {
   /// <summary>
   /// JSON RPC implementation of EVM Provider
   /// </summary>
   public class JsonRpcProvider : IEvmProvider
   {
-    private readonly JsonRpcClientSettings _settings;
+    private readonly JsonRpcProviderSettings _settings;
     private readonly IWeb3Environment _environment;
     private uint _nextMessageId;
     private Network _network;
 
-    public JsonRpcProvider(JsonRpcClientSettings settings, IWeb3Environment environment)
+    public JsonRpcProvider(JsonRpcProviderSettings settings, IWeb3Environment environment)
     {
       _environment = environment;
       _settings = settings;
     }
     
-    public async ValueTask Connect()
+    public async ValueTask Initialize()
     {
       var chainIdHexString = await ExecuteRpc<string>("eth_chainId");
       var chainId = new HexBigInteger(chainIdHexString).ToUlong();

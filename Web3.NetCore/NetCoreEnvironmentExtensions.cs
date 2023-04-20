@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using ChainSafe.GamingWeb3.Environment;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ChainSafe.GamingWeb3.NetCore;
 

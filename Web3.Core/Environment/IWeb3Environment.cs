@@ -1,4 +1,4 @@
-namespace ChainSafe.GamingWeb3
+namespace ChainSafe.GamingWeb3.Environment
 {
   /// <summary>
   /// The environment Web3 SDK is being executed in.

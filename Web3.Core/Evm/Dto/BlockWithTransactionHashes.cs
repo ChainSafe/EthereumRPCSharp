@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace ChainSafe.GamingWeb3.EVM.Blocks
+namespace ChainSafe.GamingWeb3.Evm
 {
     /// <summary>
     ///     Block including just the transaction hashes

@@ -1,20 +1,16 @@
 using System;
 using System.Threading.Tasks;
-using ChainSafe.GamingWeb3.EVM.Transactions;
+using ChainSafe.GamingWeb3.Evm;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
-using Block = ChainSafe.GamingWeb3.EVM.Blocks.Block;
+using Block = ChainSafe.GamingWeb3.Evm.Block;
+using TransactionReceipt = ChainSafe.GamingWeb3.Evm.TransactionReceipt;
 
 namespace ChainSafe.GamingWeb3.EVM
 {
   public interface IEvmProvider
   {
-    public ValueTask Connect();
-    
-    /// <summary>
-    /// Gets current user balance
-    /// </summary>
-    public ValueTask<HexBigInteger> GetBalance(BlockParameter? blockTag = null);
+    public ValueTask Initialize();
     
     /// <summary>
     /// Gets balance for the provided wallet address
@@ -54,7 +50,7 @@ namespace ChainSafe.GamingWeb3.EVM
     /// <summary>
     /// TODO
     /// </summary>
-    public ValueTask<Transactions.TransactionReceipt> WaitForReceipt(string transactionHash,
+    public ValueTask<TransactionReceipt> WaitForReceipt(string transactionHash,
       uint confirmations = 1,
       uint timeout = 30);
   }
