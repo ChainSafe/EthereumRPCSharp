@@ -3,7 +3,7 @@ using ChainSafe.GamingWeb3.Environment;
 using ChainSafe.GamingWeb3.EVM;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ChainSafe.GamingWeb3
+namespace ChainSafe.GamingWeb3.Build
 {
   /// <summary>
   /// Builder object for Web3. Used to configure set of services.
@@ -33,8 +33,8 @@ namespace ChainSafe.GamingWeb3
       var web3 = new Web3
       {
         Environment = environment,
-        EvmProvider = serviceProvider.GetService<IEvmProvider>(),
-        EvmWallet = serviceProvider.GetService<IEvmWallet>(),
+        Provider = serviceProvider.GetService<IEvmProvider>(),
+        Wallet = serviceProvider.GetService<IEvmWallet>(),
       };
 
       return web3;
