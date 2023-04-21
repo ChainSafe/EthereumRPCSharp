@@ -27,6 +27,8 @@ namespace ChainSafe.GamingWeb3.Build
     
     public Web3 Build()
     {
+      BindDefaultServices();
+      
       var serviceProvider = _serviceCollection.BuildServiceProvider();
       var environment = AssertWeb3EnvironmentBound(serviceProvider);
 
@@ -39,7 +41,12 @@ namespace ChainSafe.GamingWeb3.Build
 
       return web3;
     }
-    
+
+    private void BindDefaultServices()
+    {
+      _serviceCollection.AddSingleton<ServiceProvider>();
+    }
+
     private IWeb3Environment AssertWeb3EnvironmentBound(IServiceProvider serviceProvider)
     {
       IWeb3Environment env;

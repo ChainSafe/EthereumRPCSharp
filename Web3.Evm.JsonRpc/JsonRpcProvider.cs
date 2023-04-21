@@ -21,9 +21,11 @@ namespace ChainSafe.GamingWeb3.EVM.JsonRpc
     private readonly IWeb3Environment _environment;
     private uint _nextMessageId;
     private Network _network;
+    private ChainProvider _chainProvider;
 
-    public JsonRpcProvider(JsonRpcProviderSettings settings, IWeb3Environment environment)
+    public JsonRpcProvider(JsonRpcProviderSettings settings, IWeb3Environment environment, ChainProvider chainProvider)
     {
+      _chainProvider = chainProvider;
       _environment = environment;
       _settings = settings;
     }
@@ -33,20 +35,14 @@ namespace ChainSafe.GamingWeb3.EVM.JsonRpc
       // _network = await RequestNetwork();
     }
 
-    public ValueTask<HexBigInteger> GetBalance(BlockParameter? blockTag = null)
-    {
-      throw new System.NotImplementedException();
-    }
-
     public async ValueTask<HexBigInteger> GetBalance(string address, BlockParameter? blockTag = null)
     {
-      // todo network should be ready at this moment
+      // todo logging?
       
       blockTag ??= new BlockParameter();
       var balanceString = await ExecuteRpc<string>("eth_getBalance", address, blockTag);
       var balance = new HexBigInteger(balanceString);
-      
-      throw new NotImplementedException();
+      return balance;
     }
 
     public ValueTask<HexBigInteger> GetBlockNumber()
@@ -94,7 +90,7 @@ namespace ChainSafe.GamingWeb3.EVM.JsonRpc
       {
         var error = response.Error;
         var errorMessage = $"RPC returned error for \"{method}\": {error.Code} {error.Message} {error.Data}";
-        throw new Web3Exception( errorMessage);
+        throw new Web3Exception(errorMessage);
       }
 
       var serializer = JsonSerializer.Create();
@@ -106,12 +102,27 @@ namespace ChainSafe.GamingWeb3.EVM.JsonRpc
       var chainIdHexString = await ExecuteRpc<string>("eth_chainId");
       var chainId = new HexBigInteger(chainIdHexString).ToUlong();
 
-      if (chainId == 0)
+      if (chainId <= 0)
       {
         throw new Web3Exception("Couldn't detect network");
       }
 
-      throw new NotImplementedException();
+      var chain = await _chainProvider.GetChain(chainId);
+
+      if (chain == null)
+      {
+        return new Network
+        {
+          Name = "Unknown",
+          ChainId = chainId
+        };
+      }
+
+      return new Network
+      {
+        Name = chain.Name,
+        ChainId = chainId
+      };
     }
   }
 }
