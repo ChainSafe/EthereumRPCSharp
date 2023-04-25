@@ -17,6 +17,9 @@ namespace ChainSafe.GamingWeb3.Build
     public Web3Builder()
     {
       _serviceCollection = new Web3ServiceCollection();
+      
+      // Bind default services
+      _serviceCollection.AddSingleton<ChainProvider>();
     }
 
     public Web3Builder Configure(ConfigureServicesDelegate configureMethod)
@@ -27,27 +30,17 @@ namespace ChainSafe.GamingWeb3.Build
     
     public Web3 Build()
     {
-      BindDefaultServices();
-      
       var serviceProvider = _serviceCollection.BuildServiceProvider();
       var environment = AssertWeb3EnvironmentBound(serviceProvider);
+      var provider = serviceProvider.GetService<IEvmProvider>();
+      var wallet = serviceProvider.GetService<IEvmWallet>();
 
-      var web3 = new Web3
-      {
-        Environment = environment,
-        Provider = serviceProvider.GetService<IEvmProvider>(),
-        Wallet = serviceProvider.GetService<IEvmWallet>(),
-      };
+      var web3 = new Web3(serviceProvider, environment, provider, wallet);
 
       return web3;
     }
 
-    private void BindDefaultServices()
-    {
-      _serviceCollection.AddSingleton<ServiceProvider>();
-    }
-
-    private IWeb3Environment AssertWeb3EnvironmentBound(IServiceProvider serviceProvider)
+    private static IWeb3Environment AssertWeb3EnvironmentBound(IServiceProvider serviceProvider)
     {
       IWeb3Environment env;
       try

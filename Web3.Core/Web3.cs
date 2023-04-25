@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ChainSafe.GamingWeb3.Environment;
 using ChainSafe.GamingWeb3.EVM;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ChainSafe.GamingWeb3
 {
@@ -10,26 +11,26 @@ namespace ChainSafe.GamingWeb3
   /// </summary>
   public class Web3 : IDisposable
   {
-    private IEvmProvider? _provider;
-    private IEvmWallet? _wallet;
-    private bool _initialized;
+    private readonly ServiceProvider _serviceProvider;
+    private readonly IEvmProvider? _provider;
+    private readonly IEvmWallet? _wallet;
     
-    public IWeb3Environment Environment { get; internal set; }
+    private bool _initialized;
+    private bool _terminated;
 
-    public IEvmProvider Provider
+    public IWeb3Environment Environment { get; }
+    public IEvmProvider Provider => AssertComponentAccessible(_provider, nameof(Provider))!;
+    public IEvmWallet Wallet => AssertComponentAccessible(_wallet, nameof(Wallet))!;
+
+    internal Web3(ServiceProvider serviceProvider, IWeb3Environment environment, IEvmProvider? provider = null, IEvmWallet? wallet = null)
     {
-      get => AssertComponentAccessible(_provider, nameof(Provider))!;
-      internal set => _provider = value;
+      Environment = environment;
+      _serviceProvider = serviceProvider;
+      _provider = provider;
+      _wallet = wallet;
     }
 
-    public IEvmWallet Wallet
-    {
-      get => AssertComponentAccessible(_wallet, nameof(Wallet))!;
-      internal set => _wallet = value;
-    }
-
-    internal Web3() { }
-    public void Dispose() => Terminate();
+    void IDisposable.Dispose() => Terminate();
 
     public async ValueTask Initialize()
     {
@@ -42,7 +43,15 @@ namespace ChainSafe.GamingWeb3
 
     public void Terminate()
     {
-      // todo
+      if (_terminated) throw new Web3Exception("Web3 was already terminated.");
+
+      if (_initialized)
+      {
+        // todo terminate other components
+      }
+      
+      _serviceProvider.Dispose();
+      _terminated = true;
     }
 
     private T AssertComponentAccessible<T>(T value, string propertyName)

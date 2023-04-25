@@ -38,7 +38,9 @@ namespace ChainSafe.GamingWeb3.EVM
     public ValueTask<Network> GetNetwork(string transactionHash);
     
     /// <summary>
-    /// TODO
+    /// Returns the result of executing the transaction, using call.
+    /// A call does not require any ether, but cannot change any state.
+    /// This is useful for calling getters on Contracts.
     /// </summary>
     public ValueTask<string> Call(TransactionRequest transaction, BlockParameter blockTag = null);
     

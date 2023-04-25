@@ -17,17 +17,18 @@ namespace ChainSafe.GamingWeb3.EVM.JsonRpc
   /// </summary>
   public class JsonRpcProvider : IEvmProvider
   {
-    private readonly JsonRpcProviderSettings _settings;
+    private readonly JsonRpcProviderConfiguration _configuration;
     private readonly IWeb3Environment _environment;
+    private readonly ChainProvider _chainProvider;
+    
     private uint _nextMessageId;
     private Network _network;
-    private ChainProvider _chainProvider;
 
-    public JsonRpcProvider(JsonRpcProviderSettings settings, IWeb3Environment environment, ChainProvider chainProvider)
+    public JsonRpcProvider(JsonRpcProviderConfiguration configuration, IWeb3Environment environment, ChainProvider chainProvider)
     {
       _chainProvider = chainProvider;
       _environment = environment;
-      _settings = settings;
+      _configuration = configuration;
     }
     
     public async ValueTask Initialize()
@@ -84,7 +85,7 @@ namespace ChainSafe.GamingWeb3.EVM.JsonRpc
     {
       var httpClient = _environment.HttpClient;
       var request = new RpcRequestMessage(_nextMessageId++, method, parameters);
-      var response = await httpClient.Post<RpcRequestMessage, RpcResponseMessage>(_settings.RpcNodeUrl, request);
+      var response = await httpClient.Post<RpcRequestMessage, RpcResponseMessage>(_configuration.RpcNodeUrl, request);
       
       if (response.HasError)
       {

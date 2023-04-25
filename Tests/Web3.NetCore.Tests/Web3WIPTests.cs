@@ -21,8 +21,8 @@ public class Web3WIPTests
       .Configure(services =>
       {
         services.UseNetCoreEnvironment();
-        services.UseJsonRpcProvider(new JsonRpcProviderSettings { RpcNodeUrl = "%RPC_NODE_URL%" });
-        services.UseJsonRpcWallet(new JsonRpcWalletSettings());
+        services.UseJsonRpcProvider(new JsonRpcProviderConfiguration { RpcNodeUrl = "%RPC_NODE_URL%" });
+        services.UseJsonRpcWallet(new JsonRpcWalletConfiguration());
       })
       .Build();
   }

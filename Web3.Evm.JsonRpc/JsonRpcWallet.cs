@@ -9,13 +9,13 @@ namespace ChainSafe.GamingWeb3.EVM.JsonRpc
   /// </summary>
   public class JsonRpcWallet : IEvmWallet
   {
-    private JsonRpcWalletSettings _settings;
+    private JsonRpcWalletConfiguration _configuration;
     private IEvmProvider _provider;
 
-    public JsonRpcWallet(JsonRpcWalletSettings settings, IEvmProvider provider)
+    public JsonRpcWallet(JsonRpcWalletConfiguration configuration, IEvmProvider provider)
     {
       _provider = provider;
-      _settings = settings;
+      _configuration = configuration;
     }
     
     public bool Connected { get; private set; }
