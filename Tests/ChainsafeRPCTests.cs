@@ -172,8 +172,6 @@ namespace Tests
         [Test]
         public void GetAccountsTest()
         {
-            TestHelper.VerifyGanacheConnection(_ganacheProvider);
-
             var accounts = _ganacheProvider.ListAccounts().Result;
             Assert.AreEqual(10, accounts.Length);
             foreach (var account in accounts)
@@ -186,8 +184,6 @@ namespace Tests
         [Test]
         public void GetSignerTest()
         {
-            TestHelper.VerifyGanacheConnection(_ganacheProvider);
-
             var signer = _ganacheProvider.GetSigner();
             var accounts = _ganacheProvider.ListAccounts().Result;
             Assert.AreEqual(accounts[0], signer.GetAddress().Result);
@@ -200,8 +196,6 @@ namespace Tests
         [Test]
         public void SendContractTest()
         {
-            TestHelper.VerifyGanacheConnection(_ganacheProvider);
-
             var signer = _ganacheProvider.GetSigner();
 
             var contract = new Contract(_nftABi, _nftAddress, _ganacheProvider);
@@ -213,8 +207,6 @@ namespace Tests
         [Test]
         public void SendContractOverrideGasTest()
         {
-            TestHelper.VerifyGanacheConnection(_ganacheProvider);
-
             var signer = _ganacheProvider.GetSigner();
 
             var contract = new Contract(_nftABi, _nftAddress, _ganacheProvider);
