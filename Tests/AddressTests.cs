@@ -62,11 +62,90 @@ namespace Tests
         [TestCase("0xA6717a69C3BdEa8f01EC7EB2E57A6D9748A23027", TestName = "random-50")]
         public void ComputesChecksumAddressTest(string address)
         {
-            Assert.AreEqual(address, AddressExtensions.ConvertToEthereumChecksumAddress(address));
-            Assert.AreEqual(address, AddressExtensions.ConvertToEthereumChecksumAddress(address.Substring(2)));
-            Assert.AreEqual(address, AddressExtensions.ConvertToEthereumChecksumAddress(address.ToLower()));
+            Assert.IsTrue(address.IsEthereumChecksumAddress());
+            Assert.IsTrue(address.IsValidEthereumAddressHexFormat());
+            Assert.IsTrue(address.IsValidEthereumAddressLength());
+            Assert.IsTrue(address.IsNotAnEmptyAddress());
+            
+            Assert.AreEqual(address, address.ConvertToEthereumChecksumAddress());
+            Assert.AreEqual(address, address.Substring(2).ConvertToEthereumChecksumAddress());
+            Assert.AreEqual(address, address.ToLower().ConvertToEthereumChecksumAddress());
             Assert.AreEqual(address,
-                AddressExtensions.ConvertToEthereumChecksumAddress("0x" + address.Substring(2).ToUpper()));
+                ("0x" + address.Substring(2).ToUpper()).ConvertToEthereumChecksumAddress());
         }
+
+        [Test]
+        [TestCase("0x742d35Cc6634C0532925a3b844Bc454e4438f44F", TestName = "uppercase-checksum")]
+        [TestCase("0x742d35Cc6634C0532925a3b844Bc454e4438f44", TestName = "lowercase-checksum")]
+        [TestCase("", TestName = "empty-checksum")]
+        [TestCase(null, TestName = "null-checksum")]
+        public void InvalidChecksumAddressTest(string address)
+        {
+            Assert.IsFalse(address.IsEthereumChecksumAddress());
+        }
+        
+        [Test]
+        [TestCase("0x8ba1f109551bd432803012645ac136ddd64dba", TestName = "short-length")]
+        [TestCase("0x8ba1f109551bd432803012645ac136ddd64dba7200", TestName = "long-length")]
+        [TestCase("", TestName = "empty-length")]
+        [TestCase(null, TestName = "null-length")]
+        public void InvalidAddressLengthTest(string address)
+        {
+            Assert.IsFalse(address.IsValidEthereumAddressLength());
+        }
+        
+        [Test]
+        [TestCase("0x742d35Cc6634C0532925a3b844Bc454e4438f44", "0x742d35Cc6634C0532925a3b844Bc454e4438f44", TestName = "equal-addresses")]
+        [TestCase("0x742d35Cc6634C0532925a3b844Bc454e4438f44", "0x742d35cc6634c0532925a3b844bc454e4438f44", TestName = "different-casing")]
+        public void IsTheSameAddressTest(string address1, string address2)
+        {
+            var result = address1.IsTheSameAddress(address2);
+            
+            Assert.IsTrue(result);
+        }
+        
+        [Test]
+        [TestCase("0x742d35Cc6634C0532925a3b844Bc454e4438f44", "0x742d35Cc6634C0532925a3b844Bc454e4438f441", TestName = "different-length")]
+        [TestCase("0x742d35Cc6634C0532925a3b844Bc454e4438f44", "0xinvalidaddress", TestName = "invalid-address")]
+        [TestCase("0x742d35Cc6634C0532925a3b844Bc454e4438f44", null, TestName = "null-address")]
+        [TestCase("0x742d35Cc6634C0532925a3b844Bc454e4438f44", "", TestName = "empty-address")]
+        public void IsNotTheSameAddressTest(string address1, string address2)
+        {
+            var result = address1.IsTheSameAddress(address2);
+            
+            Assert.IsFalse(result);
+        }
+        
+    [Test]
+    public void AddressValueOrEmptyWhenAddressIsValidTest()
+    {
+        const string address = "0x742d35Cc6634C0532925a3b844Bc454e4438f44";
+        
+        var result = address.AddressValueOrEmpty();
+
+        Assert.AreEqual(address, result);
+    }
+
+    [Test]
+    [TestCase("", TestName = "empty-address")]
+    [TestCase(null, TestName = "null-address")]
+    public void AddressValueOrEmptyWhenAddressIsEmptyTest(string address)
+    {
+        var result = address.AddressValueOrEmpty();
+        
+        Assert.AreEqual("0x0", result);
+    }
+
+    [Test]
+    [TestCase("", "0x742d35Cc6634C0532925a3b844Bc454e4438f44", TestName = "empty-address")]
+    [TestCase(null, "0x742d35Cc6634C0532925a3b844Bc454e4438f44", TestName = "null-address")]
+    [TestCase("0x742d35Cc6634C0532925a3b844Bc454e4438f44", "0x742d35Cc6634C0532925a3b844Bc454e4438f44", TestName = "equal-addresses")]
+    public void IsEmptyOrEqualsAddressTest(string address1, string candidate)
+    {
+        var result = address1.IsEmptyOrEqualsAddress(candidate);
+        
+        Assert.IsTrue(result);
+    }
+
     }
 }
