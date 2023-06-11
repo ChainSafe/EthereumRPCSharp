@@ -112,7 +112,7 @@ namespace Web3Unity.Scripts.Library.Ethers.Providers
 
             blockTag ??= new BlockParameter();
 
-            var parameters = new object[] { address, position.ToHex(), blockTag };
+            var parameters = new object[] { address, position, blockTag };
             var properties = new Dictionary<string, object>
             {
                 {"address", address},

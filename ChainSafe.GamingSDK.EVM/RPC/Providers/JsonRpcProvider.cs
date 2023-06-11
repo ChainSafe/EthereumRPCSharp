@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.JsonRpc.Client.RpcMessages;
+using Nethereum.Web3.Accounts;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Web3Unity.Scripts.Library.Ethers.Network;
@@ -14,6 +15,7 @@ namespace Web3Unity.Scripts.Library.Ethers.Providers
     {
         private readonly string _connection;
         private ulong _nextId;
+        private Account unLockedAccount; 
 
         private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
         {
@@ -29,11 +31,29 @@ namespace Web3Unity.Scripts.Library.Ethers.Providers
             }
 
             _connection = url;
+             
 
             if (network != null) return;
 
-            // var task = Task.Run(async () => { base._network = await DetectNetwork(); });
-            // task.Wait(TimeSpan.FromMilliseconds(0));
+             var task = Task.Run(async () => { base._network = await DetectNetwork(); });
+             task.Wait(TimeSpan.FromMilliseconds(0));
+
+            //_dispatcher.Enqueue(async () => { base._network = await DetectNetwork(); });
+        }
+        public JsonRpcProvider(Account playerAccount ,string url = "" ,Network.Network network = null) :
+            base(network)
+        {
+            if (url == "")
+            {
+                url = DefaultUrl();
+            }
+
+            _connection = url;
+            unLockedAccount = playerAccount;
+            if (network != null) return;
+
+             var task = Task.Run(async () => { base._network = await DetectNetwork(); });
+             task.Wait(TimeSpan.FromMilliseconds(0));
 
             //_dispatcher.Enqueue(async () => { base._network = await DetectNetwork(); });
         }
@@ -41,7 +61,7 @@ namespace Web3Unity.Scripts.Library.Ethers.Providers
         public static string DefaultUrl()
         {
             var url = "http://127.0.0.1:8545";
-            return url.ToString();
+            return url;
         }
 
         public override async Task<Network.Network> DetectNetwork()
@@ -90,11 +110,14 @@ namespace Web3Unity.Scripts.Library.Ethers.Providers
                     ChainId = chain.ChainId
                 };
             }
-
             throw new Exception("could not detect network");
         }
 
         public JsonRpcSigner GetSigner(string address)
+        {
+            return new JsonRpcSigner(this, address);
+        }
+        public JsonRpcSigner GetSigner(Account address)
         {
             return new JsonRpcSigner(this, address);
         }

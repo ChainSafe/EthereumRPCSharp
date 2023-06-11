@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.Hex.HexTypes;
+using Nethereum.Signer;
+using Nethereum.Web3.Accounts;
 using Web3Unity.Scripts.Library.Ethers.Providers;
 using Web3Unity.Scripts.Library.Ethers.Transactions;
 
@@ -16,7 +18,15 @@ namespace Web3Unity.Scripts.Library.Ethers.Signers
         public JsonRpcSigner(JsonRpcProvider provider, string address) : base(provider)
         {
             this.provider = provider;
-            _address = address;
+            
+           // _address = address;
+        }
+        
+        public JsonRpcSigner(JsonRpcProvider provider, Account address) : base(provider)
+        {
+            this.provider = provider;
+            var account = new Account(address.PrivateKey);
+            _address = account.Address;
         }
 
         public JsonRpcSigner(JsonRpcProvider provider, int index) : base(provider)
@@ -33,7 +43,6 @@ namespace Web3Unity.Scripts.Library.Ethers.Signers
         public override async Task<string> GetAddress()
         {
             if (_address != null) return await Task.Run(() => _address);
-
             var accounts = await provider.Send<string[]>("eth_accounts", null);
             if (accounts.Length <= _index) throw new Exception($"unknown account #{_index}");
             return accounts[_index];

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
+using Nethereum.Web3;
+using Nethereum.Web3.Accounts;
 using Web3Unity.Scripts.Library.Ethers.Providers;
 using Web3Unity.Scripts.Library.Ethers.Transactions;
 
@@ -38,6 +40,40 @@ namespace Web3Unity.Scripts.Library.Ethers.Signers
         {
             throw new Exception("SignTransaction not implemented");
         }
+        
+        public async Task<string> SignTransaction(string privateKey, string toAddress, decimal amountInEth)
+        {
+            var web3 = new Web3();
+    
+            // Create an Account object from the private key
+            var account = new Account(privateKey);
+    
+            // Get the nonce for the sender address
+            var nonce = await web3.Eth.Transactions.GetTransactionCount.SendRequestAsync(account.Address);
+    
+            // Calculate the gas price
+            var gasPrice = await web3.Eth.GasPrice.SendRequestAsync();
+    
+            // Create the transaction input
+            var txInput = new TransactionInput
+            {
+                From = account.Address,
+                To = toAddress,
+                Value = new HexBigInteger(Web3.Convert.ToWei(amountInEth)),
+                Nonce = nonce,
+                GasPrice = gasPrice,
+                Gas = new HexBigInteger(21000) // Standard gas limit for a simple transfer
+            };
+    
+            // Sign the transaction with the account's private key
+            var signedTx = account.TransactionManager.SignTransactionAsync(txInput);
+    
+            // Send the signed transaction
+            var transactionHash = await web3.Eth.Transactions.SendRawTransaction.SendRequestAsync(signedTx.Result);
+    
+            return transactionHash;
+        }
+
 
         public virtual ISigner Connect(IProvider provider)
         {
